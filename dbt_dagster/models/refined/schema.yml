@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: rankings_female
+    description: "Women rankings"
+    columns:
+      - name: woman_id
+        tests:
+          - not_null
+          - unique
+  - name: rankings_male
+    description: "men rankings"
+    columns:
+      - name: man_id
+        tests:
+          - not_null
+          - unique
