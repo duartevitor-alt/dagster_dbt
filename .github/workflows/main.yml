@@ -28,7 +28,6 @@ jobs:
           sorted_branches=$(echo "${{ env.release_branches }}" | tr ' ' '\n' | sort -V)
           echo "Sorted branches: $sorted_branches"
           latest_release=$(echo "$sorted_branches" | tail -n 1)
-          echo "latest_release=v$latest_release"
           echo "latest_release=$latest_release" >> $GITHUB_ENV
 
       - name: Create and push tag
