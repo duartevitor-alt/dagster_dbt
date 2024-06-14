@@ -2,15 +2,33 @@ name: Create Tag
 
 on:
   push:
-    branches:
-      - main
+    branches: main
 
 jobs:
-  build:
+  tag:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: Klemensas/action-autotag@stable
-      with:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        tag_prefix: "v"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Get release branches
+        id: get_release_branches
+        run: |
+          release_branches=$(git branch -r | grep -o 'origin/release/.*' | sed 's|origin/release/||')
+          echo "release_branches=$release_branches" >> $GITHUB_ENV
+
+      - name: Sort release branches
+        id: sort_release_branches
+        run: |
+          IFS=$'\n' sorted=($(sort -V <<<"${RELEASE_BRANCHES[*]}"))
+          latest_release=${sorted[-1]}
+          echo "latest_release=$latest_release" >> $GITHUB_ENV
+
+      - name: Create and push tag
+        run: |
+          latest_release=${{ env.latest_release }}
+          git tag $latest_release
+          git push origin $latest_release
