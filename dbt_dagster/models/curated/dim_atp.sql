@@ -4,4 +4,4 @@
     )
 }}
 
-select * from {{ ref('rankings_men') }}
+select * from {{ ref('REF_rankings_men') }}

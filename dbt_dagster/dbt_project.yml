@@ -22,7 +22,7 @@ clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-on-run-end: "{% for (database, schema) in database_schemas %} call BANANA.WRITE_DBT_SCHEMAS(data => '{{ database }}', schema_name => '{{ schema }}'); {% endfor %}"
+# on-run-end: "{% for (database, schema) in database_schemas %} call BANANA.WRITE_DBT_SCHEMAS(data => '{{ database }}', schema_name => '{{ schema }}'); {% endfor %}"
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
