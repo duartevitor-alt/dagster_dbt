@@ -18,6 +18,7 @@ jobs:
         id: get_release_branches
         run: |
           release_branches=$(git branch -r | grep -o 'origin/release/.*' | sed 's|origin/release/||')
+          release_branches=$(echo "$release_branches" | tr '\n' ' ')
           echo "release_branches=${release_branches}" >> $GITHUB_ENV
 
 
