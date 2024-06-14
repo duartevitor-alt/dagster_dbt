@@ -18,14 +18,15 @@ jobs:
         id: get_release_branches
         run: |
           release_branches=$(git branch -r | grep -o 'origin/release/.*' | sed 's|origin/release/||')
-          echo "release_branches=$release_branches"
+          echo "release_branches=${release_branches}" >> $GITHUB_ENV
 
-      - name: Sort release branches and get latest
+      - name: Sort release branches
         id: sort_release_branches
         run: |
-          sorted_branches=$(echo "${{ env.release_branches }}" | tr ' ' '\n' | sort -V)
+          IFS=$'\n' read -r -d '' -a branches <<<"${{ env.release_branches }}"
+          sorted_branches=$(for branch in "${branches[@]}"; do echo "$branch"; done | sort -V)
           latest_release=$(echo "$sorted_branches" | tail -n 1)
-          echo "latest_release=${latest_release}" 
+          echo "latest_release=${latest_release}" >> $GITHUB_ENV
 
       - name: Create and push tag
         run: |
