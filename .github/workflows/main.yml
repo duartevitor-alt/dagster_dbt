@@ -20,16 +20,24 @@ jobs:
           release_branches=$(git branch -r | grep -o 'origin/release/.*' | sed 's|origin/release/||')
           echo "release_branches=${release_branches}" >> $GITHUB_ENV
 
-      - name: Sort release branches
+
+      - name: Debug release branches
+        run: echo "Release branches: ${{ env.release_branches }}"
+
+      - name: Sort release branches and get latest
         id: sort_release_branches
         run: |
-          IFS=$'\n' read -r -d '' -a branches <<<"${{ env.release_branches }}"
-          sorted_branches=$(for branch in "${branches[@]}"; do echo "$branch"; done | sort -V)
+          sorted_branches=$(echo "${{ env.release_branches }}" | tr ' ' '\n' | sort -V)
+          echo "Sorted branches: $sorted_branches"
           latest_release=$(echo "$sorted_branches" | tail -n 1)
-          echo "latest_release=${latest_release}" >> $GITHUB_ENV
+          echo "latest_release=$latest_release"
+          echo "latest_release=$latest_release" >> $GITHUB_ENV
 
-      - name: Create and push tag
-        run: |
-          latest_release=${{ env.latest_release }}
-          git tag $latest_release
-          git push origin $latest_release
+      - name: Debug latest release
+        run: echo "Latest release: ${{ env.latest_release }}"
+
+      # - name: Create and push tag
+      #   run: |
+      #     latest_release=${{ env.latest_release }}
+      #     git tag $latest_release
+      #     git push origin $latest_release
