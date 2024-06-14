@@ -22,7 +22,8 @@ jobs:
 
 
       - name: Debug release branches
-        run: echo "Release branches: ${{ env.release_branches }}"
+        run: |
+          echo "Release branches: ${{ env.release_branches }}"
 
       - name: Sort release branches and get latest
         id: sort_release_branches
@@ -34,7 +35,8 @@ jobs:
           echo "latest_release=$latest_release" >> $GITHUB_ENV
 
       - name: Debug latest release
-        run: echo "Latest release: ${{ env.latest_release }}"
+        run: |
+          echo "Latest release: ${{ env.latest_release }}"
 
       # - name: Create and push tag
       #   run: |
