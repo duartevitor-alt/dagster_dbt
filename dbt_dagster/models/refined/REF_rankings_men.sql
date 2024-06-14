@@ -1,3 +1,5 @@
+{# comment #}
+
 {{
     config(
         materialized="table"
