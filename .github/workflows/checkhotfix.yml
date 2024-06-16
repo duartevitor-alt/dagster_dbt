@@ -10,21 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
+
       - name: Determine source branch of the merge
         id: source-branch
         run: |
           echo "Determining source branch..."
+          # Fetch all remote branches to ensure we have all references
+          git fetch origin
+          # Find the merge commit parent
           COMMIT_BEFORE=$(git rev-parse HEAD^1)
+          echo "Commit before: $COMMIT_BEFORE"
+          # Check which branches contain the parent commit
           SOURCE_BRANCH=$(git branch -r --contains $COMMIT_BEFORE | grep -v 'main' | head -n 1 | sed 's/.*origin\///')
           echo "Source branch: $SOURCE_BRANCH"
           echo "::set-output name=branch::$SOURCE_BRANCH"
-      
+
       - name: Check if source branch is hotfix
         if: steps.source-branch.outputs.branch == 'hotfix'
         run: echo "The merge is from the hotfix branch. Proceeding with the workflow."
-      
+
       - name: Exit if not from hotfix
         if: steps.source-branch.outputs.branch != 'hotfix'
         run: |
