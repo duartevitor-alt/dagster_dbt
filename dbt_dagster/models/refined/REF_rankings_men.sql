@@ -32,3 +32,5 @@ male_rankings as (
 
 select *
 from male_rankings
+
+--added a comment here
