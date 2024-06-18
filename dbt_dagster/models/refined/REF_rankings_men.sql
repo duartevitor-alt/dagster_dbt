@@ -1,5 +1,5 @@
 
-{# cool #}
+
 {{
     config(
         materialized="table"
