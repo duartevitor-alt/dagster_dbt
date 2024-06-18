@@ -29,6 +29,7 @@ male_rankings as (
     ,    lateral flatten(json_data:rankings[0]:competitor_rankings) men
 
 )
+--toma
 
 select *
 from male_rankings
